@@ -24,8 +24,8 @@
    2. Using Excel formulas to calculate subscription duration for each customer
 
 #### 4.2 SQL Queries and Data Analysis
-- Data Import: Importing the cleaned Excel data into SQL Server.
-- Data Transformation: Using SQL queries to filter, group, and aggregate data.
+- Data Import: Importing the data into SQL Server.
+- Data Transformation: Using SQL queries to remove null values, filter, group, and aggregate data.
 
 #### 4.3 PowerBi Dashboard Development
 - Data Import: Importing the raw data into Power BI
@@ -46,4 +46,48 @@ EDA involved the exploring of the Data to answer some questions about the data s
 ### 6. Data Analysis
 ---
 This includes some queries I worked with during the analysis. Example:
+
+```sql
+SELECT Region, COUNT(DISTINCT(CustomerName)) AS Number_of_Customers
+FROM dbo.CustomerData
+GROUP BY REGION
+```
+``` sql
+SELECT SubscriptionType, COUNT(DISTINCT(CustomerName)) AS Number_of_Customers
+FROM CustomerData
+GROUP BY SubscriptionType
+ORDER BY COUNT(CustomerName) DESC;
+```
+```sql
+SELECT CustomerName, Canceled AS Canceled_Subscription
+FROM CustomerData
+WHERE DATEDIFF(month,SubscriptionStart,SubscriptionEnd) <= 6
+		AND Canceled = '0'
+```
+```sql
+SELECT COUNT(CustomerName) AS All_Customers, 
+	   AVG(DATEDIFF(day, SubscriptionStart, SubscriptionEnd)) AS Avg_Subscription_Duration_Days
+FROM 
+	  CustomerData;
+```
+```sql
+SELECT CustomerName, SubscriptionStart, SubscriptionEnd
+FROM CustomerData
+WHERE DATEDIFF(month,SubscriptionStart,SubscriptionEnd) > 12;
+```
+```sql
+SELECT 
+    CASE 
+        WHEN Canceled = 1 THEN 'Active' 
+        WHEN Canceled = 0 THEN 'Cancel' 
+    END AS Subscription_Status,
+    COUNT(*) AS Total_Number
+FROM CustomerData
+GROUP BY Canceled;
+```
+```sql
+DELETE FROM CustomerData
+WHERE CustomerID is NULL 
+	AND CustomerName is NULL AND Region is NULL
+```
 
