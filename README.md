@@ -94,7 +94,7 @@ WHERE CustomerID is NULL
 
 ### 7. Data Visualization
 
-<img width="960" alt="Customer dashboard" src="https://github.com/user-attachments/assets/381ae782-2c30-4e9d-ab55-38f8b59a4ce4">
+<img width="907" alt="Customer Dashboard" src="https://github.com/user-attachments/assets/e35b676d-28f2-4a7f-b156-2d5a9a6dcf4d">
 
 
 <img width="959" alt="Customer Data Pivot Table" src="https://github.com/user-attachments/assets/a5d0b81d-901a-4927-9003-da4105f22f82">
