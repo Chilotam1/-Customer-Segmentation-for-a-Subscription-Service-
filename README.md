@@ -2,7 +2,6 @@
 ## Project Title: Customer-Segmentation-for-a-Subscription-Service
 ---
 ### Table of Content
-
 [Project Overview](#project-overview)
 
 [Data Sources](#data-sources)
