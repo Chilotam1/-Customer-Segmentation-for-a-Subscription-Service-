@@ -71,34 +71,40 @@ EDA involved the exploring of the Data to answer some questions about the data s
 ---
 This includes some queries I worked with during the analysis. Examples:
 
+--- retrieve the total number of customers from each region---
 ```sql
 SELECT Region, COUNT(DISTINCT(CustomerName)) AS Number_of_Customers
 FROM dbo.CustomerData
 GROUP BY REGION
 ```
+--- find the most popular subscription type by the number of customers---
 ``` sql
 SELECT SubscriptionType, COUNT(DISTINCT(CustomerName)) AS Number_of_Customers
 FROM CustomerData
 GROUP BY SubscriptionType
 ORDER BY COUNT(CustomerName) DESC;
 ```
+--- find customers who canceled their subscription within 6 months---
 ```sql
 SELECT CustomerName, Canceled AS Canceled_Subscription
 FROM CustomerData
 WHERE DATEDIFF(month,SubscriptionStart,SubscriptionEnd) <= 6
 		AND Canceled = '0'
 ```
+---calculate the average subscription duration for all customers---
 ```sql
 SELECT COUNT(DISTINCT(CustomerName)) AS All_Customers, 
 	   AVG(DATEDIFF(day, SubscriptionStart, SubscriptionEnd)) AS Avg_Subscription_Duration_Days
 FROM 
 	  CustomerData;
 ```
+---Find customers with subscriptions longer than 12 months---
 ```sql
 SELECT CustomerName, SubscriptionStart, SubscriptionEnd
 FROM CustomerData
 WHERE DATEDIFF(month,SubscriptionStart,SubscriptionEnd) > 12;
 ```
+--- calculate total revenue by subscription type---
 ```sql
 SELECT 
     CASE 
@@ -109,13 +115,35 @@ SELECT
 FROM CustomerData
 GROUP BY Canceled;
 ```
+---REMOVING NULL VALUES IN THE DATASET---
 ```sql
 DELETE FROM CustomerData
 WHERE CustomerID is NULL 
 	AND CustomerName is NULL AND Region is NULL
-
 ```
+---- find the top 3 regions by subscription cancellations---
+```sql
+SELECT TOP 3 Region, COUNT(*) AS Cancellation_Count
+FROM CustomerData
+WHERE Canceled = 0 --- Subscriptions that were canceled
+GROUP BY Region
+ORDER BY Cancellation_Count DESC;
+```
+--- find the total number of active and canceled subscriptions---
+```sql
+SELECT 
+    CASE 
+        WHEN Canceled = 1 THEN 'Active' 
+        WHEN Canceled = 0 THEN 'Cancel' 
+    END AS Subscription_Status,
+    COUNT(*) AS Total_Number
+FROM CustomerData
+GROUP BY Canceled;
 
+Update CustomerData
+set Canceled = CASE WHEN Canceled = 1 THEN 0 ELSE 1 END
+FROM CustomerData;
+```
 ### Data Visualizations
 
 <img width="907" alt="Customer Dashboard" src="https://github.com/user-attachments/assets/e35b676d-28f2-4a7f-b156-2d5a9a6dcf4d">
